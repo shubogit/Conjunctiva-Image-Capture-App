@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/surface_view"
+    android:layout_above="@+id/detect_face_btn">
+
+    <com.wonderkiln.camerakit.CameraView
+        android:id="@+id/camera_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#80000000">
+    </com.wonderkiln.camerakit.CameraView>
+</FrameLayout>
+
+    <ImageView
+        android:id="@+id/square_img"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/square"
+        android:contentDescription="@string/square_desc"
+      />
+
+
+    <ImageView
+    android:id="@+id/imgPicker"
+    android:layout_width="fill_parent"
+    android:layout_height= "190dp" />
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="fill_parent"
+        android:layout_centerInParent="true"
+        android:layout_height= "200dp"
+        />
+<com.shubo7868.shubham.facedetectioapp.Helper.GraphicOverlay
+    android:id="@+id/graphic_overlay"
+    android:layout_width="fill_parent"
+    android:layout_above="@+id/detect_face_btn"
+    android:layout_height="fill_parent" />
+
+
+<Button
+    android:layout_alignParentBottom="true"
+    android:id="@+id/detect_face_btn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:textColorHint="@color/colorAccent"
+    android:text="DETECT FACE"
+
+    />
+</RelativeLayout>
