@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:background="#263238"
+    android:padding="@android:dimen/app_icon_size"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".UhidEntryActivity">
+
+
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="#546e7a"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/set_mode"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_settings_black_24dp"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:text="Uhid Entry"
+            android:textColor="#FFF"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:id="@+id/uhid_details"
+            />
+
+
+        <TextView
+            android:layout_below="@+id/uhid_details"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="  Enter UHID of the Student\\Person:"
+            android:textSize="18dp"
+            android:textColor="#FFF"
+            android:id="@+id/uhid_enter"
+
+            />
+        <EditText
+            android:id="@+id/uhid_input"
+           android:layout_alignParentRight="true"
+            android:layout_below="@+id/uhid_enter"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:inputType="phone"
+            style="@style/edit_text"
+            android:maxLength="13"
+            android:hint="XXX-XXXX-XXXX"
+
+
+            />
+        <Button
+            android:id="@+id/acceptUhid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uhid_input"
+            android:text="START"
+            android:layout_alignParentRight="true"
+            style="@style/button"/>
+        <Button
+            android:id="@+id/clear_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uhid_input"
+            android:text="CLEAR"
+            style="@style/button"
+            />
+
+
+
+    </RelativeLayout>
+
+
+
+</androidx.cardview.widget.CardView>
+
+</RelativeLayout>

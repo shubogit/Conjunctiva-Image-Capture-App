@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#263238"
+    android:padding="@android:dimen/app_icon_size"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".LeftEyeRetakeActivity">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="#546e7a"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+            android:id="@+id/righteye_retake"
+            android:layout_width="match_parent"
+                android:layout_height="250dp"
+
+            />
+
+
+            <Button
+            style="@style/button"
+            android:id="@+id/button_retake_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/righteye_retake"
+            android:layout_alignParentLeft="true"
+            android:text="RETAKE RIGHT EYE" />
+
+
+            <Button
+            android:id="@+id/button_OK_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+                android:layout_below="@+id/righteye_retake"
+            android:text="OK"
+            style="@style/button"/>
+
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+</RelativeLayout>
+

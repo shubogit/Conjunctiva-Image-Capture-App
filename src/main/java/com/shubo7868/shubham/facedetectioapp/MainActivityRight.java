@@ -1,4 +1,5 @@
 package com.shubo7868.shubham.facedetectioapp;
+
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -59,35 +60,11 @@ import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 
-
-//import android.content.Intent;
-//import android.support.annotation.NonNull;
-//import android.text.TextUtils;
-//import android.util.Patterns;
-//import android.webkit.WebView;
-//import android.widget.EditText;
-//import android.widget.TextView;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.Task;
-//import com.google.firebase.auth.AuthResult;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
-//import com.shubo7868.shubham.gymit.Helper.GraphicOverlay;
-//import com.shubo7868.shubham.gymit.Helper.RectOverlay;
-
-//import android.os.Bundle;
-
-
-
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivityRight extends AppCompatActivity {
     private Button faceDetectButton;
     private GraphicOverlay graphicOverlay;
     private CameraView cameraView;
     private Handler mHandler = new Handler();
-
-
-    public String UHID = "";
 
     AlertDialog alertDialog;
     private NotificationCompat.Builder mBuilder;
@@ -96,13 +73,14 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer player1;
 
     Intent myIntent;
-   public Bitmap bitmap, bitmap1;
+    public Bitmap bitmap, bitmap1;
 
     boolean flag = false;
     String test;
 
-    ImageView imgV, img;
-   // public FirebaseVisionImage face;
+    ImageView rightEyeimgV, img;
+    ImageView rightEyePreview;
+    // public FirebaseVisionImage face;
 
     private int Indicator = 0;
 
@@ -115,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     public Bitmap rightEyeCrop;
     private String selection;
 
-    private static Bitmap transferLeftEyeCrop;
+    private static Bitmap transferRightEyeCrop;
 
     Intent starterIntent;
     public String statusEye;
@@ -123,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   setContentView(R.layout.user_login);
-        setContentView(R.layout.activity_main);
+        //   setContentView(R.layout.user_login);
+        setContentView(R.layout.activity_righteye);
 
         starterIntent = getIntent();
 
@@ -148,9 +126,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivityRight.this);
 //        builder.setTitle("Conjuctiva Status:");
-//        final String[] colors = MainActivity.this.getResources().getStringArray(R.array.conjuctiva);
+//        final String[] colors = MainActivityRight.this.getResources().getStringArray(R.array.conjuctiva);
 //
 //        builder.setSingleChoiceItems(R.array.conjuctiva, -1, new DialogInterface.OnClickListener() {
 //            @Override
@@ -162,14 +140,14 @@ public class MainActivity extends AppCompatActivity {
 //            @Override
 //            public void onClick(DialogInterface dialog, int which) {
 //                statusEye = selection;
-//                System.out.println(statusEye+"FFFFFFFFFFFFFFFFFFF");
-//                Toast.makeText(MainActivity.this, "Selected Option :"+selection, Toast.LENGTH_SHORT).show();
+//                System.out.println(statusEye+"FFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAANNNNNNNNNGGGGGGGGGGGGGGGGGGGGGGGGG");
+//                Toast.makeText(MainActivityRight.this, "Selected Option :"+selection, Toast.LENGTH_SHORT).show();
 //            }
 //        });
 //        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialog, int which) {
-//
+//             //   recreate();
 //            }
 //        });
 //        builder.create();
@@ -180,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                startActivity(new Intent(MainActivity.this, Main2Activity.class));
+                startActivity(new Intent(MainActivityRight.this, Main2Activity.class));
                 finish();
             }
         });
@@ -196,11 +174,11 @@ public class MainActivity extends AppCompatActivity {
                 graphicOverlay.clear();
             }
         });
-            if(!flag) {
-                for(int j = 0;j < 2; j++) {
-                    play1();
-                }
+        if(!flag) {
+            for(int j = 0;j < 2; j++) {
+                play1();
             }
+        }
         int REQ_CODE = 0;
         if(Build.VERSION.SDK_INT > 22) {
             String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -225,8 +203,8 @@ public class MainActivity extends AppCompatActivity {
                 cameraView.stop();
 
 
-               processFacedetection(bitmap);
-               System.out.println("ERRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRR");
+                processFacedetection(bitmap);
+                System.out.println("ERRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRRRR");
 //                builder.show();
 
 
@@ -248,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void play1(){
         if(player == null) {
-            player = MediaPlayer.create(this, R.raw.lowersectionlrfteye);
+            player = MediaPlayer.create(this, R.raw.lowersectionrighteye);
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -260,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void play() {
         if(player == null) {
-            player = MediaPlayer.create(this, R.raw.leftsaved);
+            player = MediaPlayer.create(this, R.raw.rightsaved);
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -278,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         if(player != null) {
             player.release();
             player = null;
-            Toast.makeText(this, "Pull lower LEFT eye part and press TAKE LEFT EYE CONJUNCTIVA", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Pull lower RIGHT eye part and press TAKE RIGHT EYE CONJUNCTIVA", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -315,12 +293,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@androidx.annotation.NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
-            }
-        });
+                    @Override
+                    public void onFailure(@androidx.annotation.NonNull Exception e) {
+                        Toast.makeText(MainActivityRight.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivityRight.this, MainActivityRight.class));
+                    }
+                });
 
 
 
@@ -328,31 +306,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public String saveToInternalStorage(Bitmap bitmapImage) {
-//
-//        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-//        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-//        // Create imageDir
-//        File mypath = new File(directory,"profile.jpg");
-//
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(mypath);
-//            // Use the compress method on the BitMap object to write image to the OutputStream
-//            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                fos.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//      //  Toast.makeText(this, directory.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-//        return directory.getAbsolutePath();
-//
-//    }
+    public String saveToInternalStorage(Bitmap bitmapImage) {
+
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory,"profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //  Toast.makeText(this, directory.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        return directory.getAbsolutePath();
+
+    }
 
 //    private void loadImageFromStorage(String path)
 //    {
@@ -360,8 +338,8 @@ public class MainActivity extends AppCompatActivity {
 //        try {
 //            File f=new File(path, "profile.jpg");
 //            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-//           img=(ImageView)findViewById(R.id.lefteye_retake);
-//           img.setImageBitmap(b);
+//            rightEyePreview=(ImageView)findViewById(R.id.righteye_retake);
+//            rightEyePreview.setImageBitmap(b);
 //        }
 //        catch (FileNotFoundException e)
 //        {
@@ -451,13 +429,13 @@ public class MainActivity extends AppCompatActivity {
                 tempFaceCrop  = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.width(), rect.height());
 
                 for(int i = 0; i < leftEyeContour.size()-1; i++) {
-                     minLX = leftEyeContour.get(0).getX();
-                  //   modLeftX;
-                     minLY = leftEyeContour.get(0).getY();
-                  //  float modLeftY;
-                     maxLY = leftEyeContour.get(0).getY();
-                  //  float modDownY;
-                  //  canvas.drawCircle(leftEyeContour.get(i+1).getX(), leftEyeContour.get(i+1).getY(), 4f, mPaint);
+                    minLX = leftEyeContour.get(0).getX();
+                    //   modLeftX;
+                    minLY = leftEyeContour.get(0).getY();
+                    //  float modLeftY;
+                    maxLY = leftEyeContour.get(0).getY();
+                    //  float modDownY;
+                    //  canvas.drawCircle(leftEyeContour.get(i+1).getX(), leftEyeContour.get(i+1).getY(), 4f, mPaint);
                     if(leftEyeContour.get(i).getX() < minLX) {
                         minLX = leftEyeContour.get(i).getX();
                     }
@@ -468,21 +446,21 @@ public class MainActivity extends AppCompatActivity {
                         maxLY = leftEyeContour.get(i).getY();
                     }
                 }
-                    modLeftY = minLY-40;
-                    modLeftX = minLX-10;
-                    modDownY = maxLY+60;
+                modLeftY = minLY-40;
+                modLeftX = minLX-10;
+                modDownY = maxLY+60;
 
-                    System.out.println("modLeftY "+modLeftY);
-                    System.out.println("modLeftX "+modLeftX);
-                    System.out.println("modDownY "+modDownY);
+                System.out.println("modLeftY "+modLeftY);
+                System.out.println("modLeftX "+modLeftX);
+                System.out.println("modDownY "+modDownY);
 
 
                 for(int i = 0; i < rightEyeContour.size()-1; i++) {
-                     maxX = rightEyeContour.get(0).getX();
+                    maxX = rightEyeContour.get(0).getX();
 
-                     minRY = rightEyeContour.get(0).getY();
+                    minRY = rightEyeContour.get(0).getY();
 
-                //    canvas.drawCircle(rightEyeContour.get(i+1).getX(), rightEyeContour.get(i+1).getY(), 4f, mPaint);
+                    //    canvas.drawCircle(rightEyeContour.get(i+1).getX(), rightEyeContour.get(i+1).getY(), 4f, mPaint);
                     if(rightEyeContour.get(i).getX() > maxX) {
                         maxX = rightEyeContour.get(i).getX();
                     }
@@ -520,10 +498,10 @@ public class MainActivity extends AppCompatActivity {
                 leftEyeCrop = Bitmap.createBitmap(bitmap, avgX, avgYY, widthLeftEye, heightEyee);
 
                 tempEyeCrop = Bitmap.createBitmap(bitmap, modLeftXX, avgYY, widthEyee,heightEyee);
-//               imgV = findViewById(R.id.imgView);
-//              imgV.setImageDrawable(new BitmapDrawable(getResources(), rightEyeCrop));        //depricated as called in different rightEye class
-//
-                transferLeftEyeCrop = leftEyeCrop;
+//                rightEyeimgV = findViewById(R.id.righteyeimgView);
+//                rightEyeimgV.setImageDrawable(new BitmapDrawable(getResources(), rightEyeCrop));
+//                   showImageR(bitmap);
+                transferRightEyeCrop = rightEyeCrop;
 
 //                if (showImageR(rightEyeCrop)) {
 ////                   finish();
@@ -544,10 +522,34 @@ public class MainActivity extends AppCompatActivity {
             graphicOverlay.add(contourOverlay);
 
 
+//            Boolean defaultFromQRAccount = Scanner.getDefaultMode();
+//            if(defaultFromQRAccount == false) {
+//                myIntent = new Intent(this, Scanner.class);
+//            }
+//            else if(defaultFromQRAccount){
+//                String ActionOnMode = Scanner.getStatusMode();
+//                if(ActionOnMode.equals("Use QR Code Scanning")) {
+//                    myIntent = new Intent(this, Scanner.class);
+//                }
+//                if(ActionOnMode.equals("Use Manual UHID Entry")) {
+//                    myIntent = new Intent(this, UhidEntryActivity.class);
+//                }
+//            }
+//            Boolean modeChangeFromUhidActivity = UhidEntryActivity.get_ModeChangedFromUhidActivity();
+//            if(modeChangeFromUhidActivity) {
+//                String ActionOnModefromUhid = UhidEntryActivity.getStatusModeFromUhid();
+//                if(ActionOnModefromUhid.equals("Use QR Code Scanning")) {
+//                    myIntent = new Intent(this,Scanner.class);
+//                }
+//                if(ActionOnModefromUhid.equals("Use Manual UHID Entry")) {
+//                    myIntent = new Intent(this, UhidEntryActivity.class);
+//                }
+//
+//            }
 
 
-            myIntent = new Intent(this, LeftEyeRetakeActivity.class);
-            myIntent.putExtra("leftRyePre", leftEyeCrop);
+            myIntent = new Intent(MainActivityRight.this, RightEyeRetakeActivity.class);
+
 
 
 
@@ -562,16 +564,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-           int x1 = (int) face.getBoundingBox().exactCenterX()/2;
-           int y1 = (int)face.getBoundingBox().exactCenterY()/2;
-           int x2 = face.getBoundingBox().left;
-           int y2 = face.getBoundingBox().top;
-           int x3 = face.getBoundingBox().right;
-           int y3 = face.getBoundingBox().bottom;
-           int width1 = Math.abs(x3-x2);
-           int height1 =Math.abs(y2-y3);
-           int width = face.getBoundingBox().width();
-           int height =  face.getBoundingBox().height();
+            int x1 = (int) face.getBoundingBox().exactCenterX()/2;
+            int y1 = (int)face.getBoundingBox().exactCenterY()/2;
+            int x2 = face.getBoundingBox().left;
+            int y2 = face.getBoundingBox().top;
+            int x3 = face.getBoundingBox().right;
+            int y3 = face.getBoundingBox().bottom;
+            int width1 = Math.abs(x3-x2);
+            int height1 =Math.abs(y2-y3);
+            int width = face.getBoundingBox().width();
+            int height =  face.getBoundingBox().height();
 
            /* System.out.println("centerX -> "+ face.getBoundingBox().centerX());
             System.out.println("centerY -> "+ face.getBoundingBox().centerY());
@@ -589,7 +591,7 @@ public class MainActivity extends AppCompatActivity {
 
             Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),Bitmap.Config.RGB_565);
             //    Bitmap tempBitmap1 = Bitmap.createBitmap(bitmap, img.getLeft(),img.getTop()+10, bitmap.getWidth()-100, bitmap.getHeight()-100);
-        //   Bitmap tempBitmap2 = Bitmap.createBitmap(bitmap,x1, y1, width1,height1 );
+            //   Bitmap tempBitmap2 = Bitmap.createBitmap(bitmap,x1, y1, width1,height1 );
 //            Canvas tempCanvas = new Canvas(tempBitmap2);
 //            tempCanvas.drawBitmap(bitmap, x2, y2,null);
 
@@ -614,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        loadImageFromStorage(saveToInternalStorage(leftEyeCrop));     //Indicator --> 2
+//       loadImageFromStorage(saveToInternalStorage(rightEyeCrop));     //Indicator --> 2   depricated here as called already in MainActivity class
         System.out.println("AFTER GETTING BITMAP");
 
 
@@ -625,86 +627,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-      //  createDirectoryAndSaveFile(rightEyeCrop, ": RightEyeConjuctiva");   //Depricated from here as called individually another activity
 
-//        createDirectoryAndSaveFaceFile(tempFaceCrop, statusEye);
+      //  createDirectoryAndSaveFile(leftEyeCrop, ": LeftEyeConjuctiva");
+      //  createDirectoryAndSaveFile(tempFaceCrop, statusEye);
 
 
 
-       // loadImageFromStorage(saveToInternalStorage(tempEyeCrop));
+        // loadImageFromStorage(saveToInternalStorage(tempEyeCrop));
 
 
         alertDialog.dismiss();
     }
-
-    public static Bitmap getTransferLeftEyeCrop() {
-        return transferLeftEyeCrop;
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.N)
-    private void createDirectoryAndSaveFaceFile(Bitmap imageToSave, String fileEndName) {
-        Bundle extras = getIntent().getExtras();
-        String UHID_QRCODE  = "";
-        String UHID = "";
-        String UHID_MANUAL = "";
-
-
-
-        if(extras != null) {
-            if(extras.getString("#UHIDQR") != null) {
-                UHID_QRCODE = extras.getString("#UHIDQR");
-                UHID = UHID_QRCODE;
-                System.out.println(UHID+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@================================@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            }
-
-
-            if(extras.getString("@UHID") != null) {
-                UHID_MANUAL =extras.getString("@UHID");
-                UHID = UHID_MANUAL;
-                System.out.println("No QRCODE Scanned By user");
-            }
-
-        }
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd :: HH:mm:ss");
-        String formattedDate = df.format(c.getTime());     // c is Calendar object
-        System.out.println("========> formatted date => "+formattedDate);
-
-        File direct = new File(Environment.getExternalStorageDirectory() + "/FACESCONJUCTIVA");
-
-
-        String FILENAME = UHID+ " : " + formattedDate + fileEndName + ".png";
-
-        if (!direct.exists()) {
-            File wallpaperDirectory = new File("/sdcard/FACESCONJUCTIVA/");
-            wallpaperDirectory.mkdirs();
-        }
-
-        File file = new File("/sdcard/FACESCONJUCTIVA/", FILENAME);
-        if (file.exists()) {
-            file.delete();
-        }
-        boolean succ = false;
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            imageToSave.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
-            succ = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(succ) {
-            Toast.makeText(getApplicationContext(), "Face & Eye image saved to FACES", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(),
-                    "Error during image saving to FACES", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
-        }
-    }
-
     private Runnable mNewIntent = new Runnable() {
 
         @Override
@@ -726,7 +659,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    public static Bitmap getTransferRightEyeCrop() {
+        return transferRightEyeCrop;
+    }
 
 
 
@@ -738,7 +673,7 @@ public class MainActivity extends AppCompatActivity {
 //            Indicator = 1;
 //            return true;
 //        }else
-//        return false;
+//            return false;
 //    }
 //    private boolean showImageL(Bitmap bitmap) {
 //        Indicator = 2;
@@ -748,40 +683,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
+
+
+
 }
-/*  public void SavesToInternal(ImageView imageView) {
-
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-
-        File sdCardDirectory = Environment.getExternalStorageDirectory();
-        //creating specific file for image storage
-        String DATE = String.valueOf(System.currentTimeMillis());
-        String FILENAME = DATE + ".png";
-
-        File image = new File(sdCardDirectory, FILENAME);
-
-        boolean success = false;
-        FileOutputStream outputStream;
-        try {
-            System.out.println("<<???????????????????????????????????????<<<<<<<<<<<<<<<");
-            outputStream = new FileOutputStream(image);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-
-            outputStream.flush();
-            outputStream.close();
-            success = true;
-        }catch (FileNotFoundException e) {
-            System.out.println(e);
-        }catch (IOException e) {
-            System.out.println(e);
-        }
-
-        if(success) {
-            Toast.makeText(getApplicationContext(), "Face & Eye image saved", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(),
-                    "Error during image saving", Toast.LENGTH_LONG).show();
-        }
-    }*/

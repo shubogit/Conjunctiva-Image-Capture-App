@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="35dp"/>
+            <solid android:color="#F7F7F7"/>
+            <size android:height="35dp"></size>
+            <padding android:bottom="@dimen/cardview_compat_inset_shadow"></padding>
+        </shape>
+    </item>
+
+</selector>

@@ -27,32 +27,42 @@ android:layout_height="match_parent">
       />
 
 
-    <ImageView
-    android:id="@+id/imgPicker"
-    android:layout_width="fill_parent"
-    android:layout_height= "190dp" />
+    <!--<ImageView-->
+    <!--android:id="@+id/imgPicker"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height= "190dp" />-->
 
-    <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="fill_parent"
-        android:layout_centerInParent="true"
-        android:layout_height= "200dp"
-        />
+    <!--<ImageView-->
+        <!--android:id="@+id/imgView"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_height= "200dp"-->
+        <!--/>-->
 <com.shubo7868.shubham.facedetectioapp.Helper.GraphicOverlay
     android:id="@+id/graphic_overlay"
     android:layout_width="fill_parent"
     android:layout_above="@+id/detect_face_btn"
     android:layout_height="fill_parent" />
 
+<ImageButton
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:src="@drawable/ic_power_settings_new_black_24dp"
+    android:layout_alignParentRight="true"
+    android:background="@null"
+    android:id="@+id/power"
+    />
 
 <Button
-    android:layout_alignParentBottom="true"
+    android:text="Take left eye Conjunctiva image"
     android:id="@+id/detect_face_btn"
+    android:layout_alignParentBottom="true"
+    android:background="#141313"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:textColorHint="@color/colorAccent"
-    android:text="DETECT FACE"
+    android:color="#66292626"
+    android:textSize="15dp"
+    android:textColor="#FFFF"
 
     />
 </RelativeLayout>

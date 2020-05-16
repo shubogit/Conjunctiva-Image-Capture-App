@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimaryDark"
+    android:padding="@android:dimen/app_icon_size"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/qrMode"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:src="@drawable/ic_more_horiz_black_24dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@null"-->
+        <!--/>-->
+
+    <TextView
+        android:id="@+id/logText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Login Here"
+    android:textAllCaps="true"
+    android:gravity="center"
+    android:textColor="#fff"
+    android:layout_marginBottom="20dp"
+    android:textSize="25dp"
+    />
+
+    <EditText
+        android:layout_below="@+id/logText"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:id="@+id/main_emailField"
+    android:hint="example@abc.com"
+    android:layout_marginBottom="20dp"
+    android:maxLines="1"
+        style="@style/edit_text"/>
+
+    <EditText
+        android:layout_below="@+id/main_emailField"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:hint="Password"
+    android:gravity="center"
+    android:password="true"
+    android:maxLines="1"
+    android:id="@+id/main_passwordField"
+    android:layout_marginBottom="20dp"
+    style="@style/edit_text"/>
+
+
+
+
+    <Button
+        android:layout_below="@+id/main_passwordField"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/button_login"
+    style="@style/button"
+    android:text="Login" />
+
+
+</RelativeLayout>
