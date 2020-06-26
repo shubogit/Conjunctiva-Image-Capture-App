@@ -21,6 +21,7 @@ import com.shubo7868.shubham.facedetectioapp.Helper.GraphicOverlay;
  * graphic overlay view.
  *//*
 
+// This activity is not in use, it was for realtime faceDetection and getting face contours
 class FaceGraphic extends GraphicOverlay.Graphic {
     private static final float FACE_POSITION_RADIUS = 10.0f;
     private static final float ID_TEXT_SIZE = 40.0f;

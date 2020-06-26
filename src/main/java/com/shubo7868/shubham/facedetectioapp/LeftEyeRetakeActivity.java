@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,6 +35,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+//This activity previews left eye conjunctiva image
 
 public class LeftEyeRetakeActivity extends AppCompatActivity {
 
@@ -48,23 +52,37 @@ public class LeftEyeRetakeActivity extends AppCompatActivity {
     //Firebase releated
     private Firebase mRootRefLeft;
     private StorageReference mStorage;
+    private StorageReference storageRef;
+
+
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lefteye_retake);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
 
-        //Firebase
-        mRootRefLeft = new Firebase("https://face-detection-ml-app.firebaseio.com/Students");
-        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://face-detection-ml-app.appspot.com");
+        //Firebase reference
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        mRootRefLeft = new Firebase("https://face-detection-ml-app.firebaseio.com/Students");
+//        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://face-detection-ml-app.appspot.com");
+        // changed storage
+        mRootRefLeft = new Firebase("https://hk-schoolkids-project.firebaseio.com/hk-schoolkids-project");
+        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://hk-schoolkids-project.appspot.com");
+
+       // mRootRefLeft.keepSynced(true);
+        // trying cache thing
+        storageRef = storage.getReference();
+
 
 
         retakeLeft = findViewById(R.id.button_retake);
         okTakeRight = findViewById(R.id.button_OK);
         leftEyePreview = findViewById(R.id.lefteye_retake);
 
+        // getting bitmap transferred so that it can be saved to internal and firebase
         leftEyeCropImg = MainActivity.getTransferLeftEyeCrop();
         loadImageFromStorage(saveToInternalStorage(leftEyeCropImg));
 
@@ -72,38 +90,27 @@ public class LeftEyeRetakeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
-
+                // Below Creates file and saves bitmap to internal storage
                 createDirectoryAndSaveFile(leftEyeCropImg, ": LeftEyeConjuctiva");
-                // Saving to Firebase
-//                Firebase childRefLeft = mRootRefLeft.child(FilenameFirebase);
-//                childRefLeft.setValue(leftEyeCropImg);
 
                 //Firebase Storage reference
                 Uri leftEyeUri = getImageUri(LeftEyeRetakeActivity.this, leftEyeCropImg);
-                StorageReference filepath = mStorage.child("FACES").child(FilenameFirebase);
+                StorageReference filepath = mStorage.child("ConjunctivaImages").child(FilenameFirebase);
                 filepath.putFile(leftEyeUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(LeftEyeRetakeActivity.this, "Uploaded",Toast.LENGTH_LONG).show();
+                        Toast.makeText(LeftEyeRetakeActivity.this, "Uploaded LeftEye",Toast.LENGTH_LONG).show();
 
-                startActivity(new Intent(LeftEyeRetakeActivity.this, MainActivityRight.class));
+
                 // if Uhid details needed move it through...
             }
+
         });
-
-
-
-
-
-
-
-
+                startActivity(new Intent(LeftEyeRetakeActivity.this, MainActivityRight.class));
 
             }
         });
-        //It was inside ok OK take right eye button call
+
         retakeLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +119,7 @@ public class LeftEyeRetakeActivity extends AppCompatActivity {
         });
 
     }
+    // Below method takes Bitmap(image) and timestamps so could be saved to firebase later
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
@@ -119,6 +127,8 @@ public class LeftEyeRetakeActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
+
+    // Takes bitmap to save
     public String saveToInternalStorage(Bitmap bitmapImage) {
 
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
@@ -162,81 +172,7 @@ public class LeftEyeRetakeActivity extends AppCompatActivity {
 
 
     }
-//    @TargetApi(Build.VERSION_CODES.N)
-//    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileEndName) {
-//
-//        Bundle extras = getIntent().getExtras();
-//        String UHID_QRCODE  = "";
-//
-//        String UHID_MANUAL = "";
-//        //  Bundle extras1 = getIntent().getExtras();
-//      /*  if(extras != null) {
-//             UHID_MANUAL =extras.getString("@UHID");
-//             UHID = UHID_MANUAL;
-//        }else {
-//           System.out.println("No Manual Entry from user");
-////            UHID_MANUAL =extras.getString("@UHID");
-////            UHID= UHID_MANUAL;
-//            UHID_QRCODE = extras.getString("#UHIDQR");
-//            UHID = UHID_QRCODE;
-//        }*/
-//
-//
-//        //  UHID_MANUAL = getIntent().getStringExtra("@UHID");
-//
-//
-//        if(extras != null) {
-//            if(extras.getString("#UHIDQR") != null) {
-//                UHID_QRCODE = extras.getString("#UHIDQR");
-//                UHID = UHID_QRCODE;
-//                System.out.println(UHID+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@================================@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//            }
-//
-//
-//            if(extras.getString("@UHID") != null) {
-//                UHID_MANUAL = extras.getString("@UHID");
-//                UHID = UHID_MANUAL;
-//                System.out.println("No QRCODE Scanned By user");
-//            }
-//
-//        }
-//        Calendar c = Calendar.getInstance();
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd :: HH:mm:ss");
-//        String formattedDate = df.format(c.getTime());     // c is Calendar object
-//        System.out.println("========> formatted date => "+formattedDate);
-//
-//        File direct = new File(Environment.getExternalStorageDirectory() + "/FACES");
-//
-//
-//        String FILENAME = UHID+ " : " + formattedDate + fileEndName + ".jpeg";
-//
-//        if (!direct.exists()) {
-//            File wallpaperDirectory = new File("/sdcard/FACES/");
-//            wallpaperDirectory.mkdirs();
-//        }
-//
-//        File file = new File("/sdcard/FACES/", FILENAME);
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//        boolean succ = false;
-//        try {
-//            FileOutputStream out = new FileOutputStream(file);
-//            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
-//            out.flush();
-//            out.close();
-//            succ = true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if(succ) {
-//            Toast.makeText(getApplicationContext(), "Face & Eye image saved to FACES", Toast.LENGTH_LONG).show();
-//        }
-//        else {
-//            Toast.makeText(getApplicationContext(),
-//                    "Error during image saving to FACES", Toast.LENGTH_LONG).show();
-//        }
-//    }
+
 @TargetApi(Build.VERSION_CODES.N)
 private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileEndName) {
 
@@ -244,37 +180,6 @@ private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileEndName) 
     String UHID_QRCODE  = Scanner.getUhID();
     String UHID = "";
     String UHID_MANUAL = UhidEntryActivity.get_uhidNumber();
-    //  Bundle extras1 = getIntent().getExtras();
-      /*  if(extras != null) {
-             UHID_MANUAL =extras.getString("@UHID");
-             UHID = UHID_MANUAL;
-        }else {
-           System.out.println("No Manual Entry from user");
-//            UHID_MANUAL =extras.getString("@UHID");
-//            UHID= UHID_MANUAL;
-            UHID_QRCODE = extras.getString("#UHIDQR");
-            UHID = UHID_QRCODE;
-        }*/
-
-
-    //  UHID_MANUAL = getIntent().getStringExtra("@UHID");
-
-
-//        if(extras != null) {
-//            if(extras.getString("#UHIDQRr") != null) {
-//                UHID_QRCODE = extras.getString("#UHIDQRr");
-//                UHID = UHID_QRCODE;
-//                System.out.println(UHID+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@================================@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//            }
-//
-//
-//            if(extras.getString("@UHIDr") != null) {
-//                UHID_MANUAL =extras.getString("@UHIDr");
-//                UHID = UHID_MANUAL;
-//                System.out.println("No QRCODE Scanned By user");
-//            }
-//
-//        }
 
 
     if(!UHID_MANUAL.isEmpty()) {

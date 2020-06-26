@@ -65,7 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
-
+// This activity detects Face on Image Capture and stores it on local and Firebase
 public class FaceCapture extends AppCompatActivity {
 
     private Button faceDetectButton;
@@ -110,9 +110,8 @@ public class FaceCapture extends AppCompatActivity {
 
 
     //Firebase releated declerations
-    private Firebase mRootRefFace; // push face img to firebase
+    private Firebase mRootRefFace;
     private StorageReference mStorage;
-
 
 
 
@@ -127,9 +126,11 @@ public class FaceCapture extends AppCompatActivity {
         Intent intent = getIntent();
         UHID = intent.getStringExtra("UHID");
 
+
         //firebase database for this app connected
-        mRootRefFace = new Firebase("https://face-detection-ml-app.firebaseio.com/Students");
-        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://face-detection-ml-app.appspot.com");
+
+        mRootRefFace = new Firebase("https://hk-schoolkids-project.firebaseio.com/hk-schoolkids-project");
+        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://hk-schoolkids-project.appspot.com");
 
 
         Logout = findViewById(R.id.powerFC);
@@ -148,34 +149,6 @@ public class FaceCapture extends AppCompatActivity {
                 .setMessage("Processing Captured Face...")
                 .setCancelable(false)
                 .build();
-
-
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        builder.setTitle("Conjuctiva Status:");
-//        final String[] colors = MainActivity.this.getResources().getStringArray(R.array.conjuctiva);
-//
-//        builder.setSingleChoiceItems(R.array.conjuctiva, -1, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                selection = colors[which];
-//            }
-//        });
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                statusEye = selection;
-//                System.out.println(statusEye+"FFFFFFFFFFFFFFFFFFF");
-//                Toast.makeText(MainActivity.this, "Selected Option :"+selection, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//        builder.create();
-
 
 
         Logout.setOnClickListener(new View.OnClickListener() {
@@ -243,8 +216,7 @@ public class FaceCapture extends AppCompatActivity {
 
     }
 
-
-
+    // Below is voice support added to this activity
 
     public void play1(){
         if(player == null) {
@@ -289,13 +261,9 @@ public class FaceCapture extends AppCompatActivity {
         stopPlayer();
     }
 
+    // This method processes the bitmap(Image) captured from Camera to get the Face
     private void processFacedetection(Bitmap bitmap) {
 
-       /* try {
-             bitmap1 = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(new File(saveToInternalStorage(bitmap))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         final FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap);
 
@@ -373,13 +341,15 @@ public class FaceCapture extends AppCompatActivity {
 //    }
 
 
-
+// This method timestamps every Bitmap(image) passed to it so that it can be uniquely pushed to Firebase later on
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "TitleFaceImage"+"-"+(System.currentTimeMillis()), null);
         return Uri.parse(path);
     }
+
+    // This method works on detected List of Faces to get List of points on the face in order to obtain diff face related details.
 
     private void getFaceResults(List<FirebaseVisionFace> firebaseVisionFaces) {
         int counter = 0;
@@ -524,7 +494,7 @@ public class FaceCapture extends AppCompatActivity {
                     int widthRightEye = (avgX-modLeftXX);
                     int widthLeftEye = (int)(modRightX-avgX) ;
 
-
+                    //Bitmap of different face points
                     rightEyeCrop = Bitmap.createBitmap(bitmap, modLeftXX, avgYY, widthRightEye, heightEyee);
                     leftEyeCrop = Bitmap.createBitmap(bitmap, avgX, avgYY, widthLeftEye, heightEyee);
 
@@ -537,10 +507,10 @@ public class FaceCapture extends AppCompatActivity {
                 System.out.println("GOT FACE BITMAP>>>>>>****<<<<<");
 
                 createDirectoryAndSaveFaceFile(tempFaceCrop, ":FullFace");
-                // Creating a storage Refrence from app
+                // Creating a storage Reference from app
                 Uri faceUri = getImageUri(FaceCapture.this,tempFaceCrop);
                 System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"+FILENAMEfb);
-                StorageReference filepath = mStorage.child("FACES").child(FILENAMEfb);
+                StorageReference filepath = mStorage.child("ConjunctivaImages").child(FILENAMEfb);
                 filepath.putFile(faceUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -675,7 +645,7 @@ public class FaceCapture extends AppCompatActivity {
 
        alertDialog.dismiss();
     }
-    // Below method saves faces..to give filename
+    // Below method saves faces(bitmap you provide) to file(filename you provide) into your internal phone memory inside "FACE" folder
     @TargetApi(Build.VERSION_CODES.N)
     private void createDirectoryAndSaveFaceFile(Bitmap imageToSave, String fileEndName) {
         Bundle extras = getIntent().getExtras();
@@ -739,9 +709,7 @@ public class FaceCapture extends AppCompatActivity {
         else {
             Toast.makeText(getApplicationContext(),
                     "Error during image saving to FACES", Toast.LENGTH_LONG).show();
-//          Intent intent = new Intent(FaceCapture.this, FaceCapture.class);
-//            intent.putExtra("UHID", UHID);
-//            startActivity(intent);
+
         }
     }
 
@@ -768,81 +736,7 @@ public class FaceCapture extends AppCompatActivity {
 
 
 
-//    @TargetApi(Build.VERSION_CODES.N)
-//    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileEndName) {
-//
-//        Bundle extras = getIntent().getExtras();
-//        String UHID_QRCODE  = "";
-//
-//        String UHID_MANUAL = "";
-//        //  Bundle extras1 = getIntent().getExtras();
-//      /*  if(extras != null) {
-//             UHID_MANUAL =extras.getString("@UHID");
-//             UHID = UHID_MANUAL;
-//        }else {
-//           System.out.println("No Manual Entry from user");
-////            UHID_MANUAL =extras.getString("@UHID");
-////            UHID= UHID_MANUAL;
-//            UHID_QRCODE = extras.getString("#UHIDQR");
-//            UHID = UHID_QRCODE;
-//        }*/
-//
-//
-//        //  UHID_MANUAL = getIntent().getStringExtra("@UHID");
-//
-//
-//        if(extras != null) {
-//            if(extras.getString("#UHIDQR") != null) {
-//                UHID_QRCODE = extras.getString("#UHIDQR");
-//                UHID = UHID_QRCODE;
-//                System.out.println(UHID+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@================================@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//            }
-//
-//
-//            if(extras.getString("@UHID") != null) {
-//                UHID_MANUAL =extras.getString("@UHID");
-//                UHID = UHID_MANUAL;
-//                System.out.println("No QRCODE Scanned By user");
-//            }
-//
-//        }
-//        Calendar c = Calendar.getInstance();
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd :: HH:mm:ss");
-//        String formattedDate = df.format(c.getTime());     // c is Calendar object
-//        System.out.println("========> formatted date => "+formattedDate);
-//
-//        File direct = new File(Environment.getExternalStorageDirectory() + "/FACES");
-//
-//
-//        String FILENAME = UHID+ " : " + formattedDate + fileEndName + ".png";
-//
-//        if (!direct.exists()) {
-//            File wallpaperDirectory = new File("/sdcard/FACES/");
-//            wallpaperDirectory.mkdirs();
-//        }
-//
-//        File file = new File("/sdcard/FACES/", FILENAME);
-//        if (file.exists()) {
-//            file.delete();
-//        }
-//        boolean succ = false;
-//        try {
-//            FileOutputStream out = new FileOutputStream(file);
-//            imageToSave.compress(Bitmap.CompressFormat.PNG, 100, out);
-//            out.flush();
-//            out.close();
-//            succ = true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if(succ) {
-//            Toast.makeText(getApplicationContext(), "Face & Eye image saved to FACES", Toast.LENGTH_LONG).show();
-//        }
-//        else {
-//            Toast.makeText(getApplicationContext(),
-//                    "Error during image saving to FACES", Toast.LENGTH_LONG).show();
-//        }
-//    }
+
 
 
 }

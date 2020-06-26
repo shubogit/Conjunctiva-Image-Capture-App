@@ -29,7 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-
+// Was for testing purpose for the working of camera(Not the part of project)
 public class CameraEye extends MainActivity {
 
     private static final int CAMERA_REQUEST = 1888;

@@ -1,34 +1,111 @@
 {
   "project_info": {
-    "project_number": "757235494269",
-    "firebase_url": "https://face-detection-ml-app.firebaseio.com",
-    "project_id": "face-detection-ml-app",
-    "storage_bucket": "face-detection-ml-app.appspot.com"
+    "project_number": "201389974099",
+    "firebase_url": "https://hk-schoolkids-project.firebaseio.com",
+    "project_id": "hk-schoolkids-project",
+    "storage_bucket": "hk-schoolkids-project.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:757235494269:android:fe2fcfcacef89e218e3014",
+        "mobilesdk_app_id": "1:201389974099:android:93b5dab7ebcb03ce5c1ca6",
         "android_client_info": {
-          "package_name": "com.shubo7868.shubham.facedetectioapp"
+          "package_name": "com.healthykid.trawello"
         }
       },
       "oauth_client": [
         {
-          "client_id": "757235494269-pnpvueiif2onlnp60k3scjam2ntdr4ks.apps.googleusercontent.com",
+          "client_id": "201389974099-5l0to7ugp0hkqref2vuui4c6bmfq27qs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthykid.trawello",
+            "certificate_hash": "6986a75d377c052885e95ec6d65eb94a10c3ff12"
+          }
+        },
+        {
+          "client_id": "201389974099-pl2591336ja2r54obon5jchk0c0j3ovq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthykid.trawello",
+            "certificate_hash": "e6a9a651915e96178eeb7872be381cad63bad2c9"
+          }
+        },
+        {
+          "client_id": "201389974099-m7hvnsd7kl0toicthtiiltnuiqg7mm7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthykid.trawello",
+            "certificate_hash": "6aa0434804c9c02c6a64d7401a6b90382a427476"
+          }
+        },
+        {
+          "client_id": "201389974099-ka21qmo8etp2r3oje8n2j98nhi62enuv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthykid.trawello",
+            "certificate_hash": "1764956d10552769aacb729088d6d0b37c22515d"
+          }
+        },
+        {
+          "client_id": "201389974099-21ouoiqv90tuikbc2p8teiue8ooa37a9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.healthykid.trawello",
+            "certificate_hash": "e99b3228a079e0bc1b77b3b87befa3d6e005300b"
+          }
+        },
+        {
+          "client_id": "201389974099-ss6nd2ouimpihisrl1r77tlpsoa5dagd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDM_NSzBuXNXiqxrtO-sCIyCOMShg02W5A"
+          "current_key": "AIzaSyDoqYYbOlT5fnFdHm78R4p-gr-APrDltKI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "757235494269-pnpvueiif2onlnp60k3scjam2ntdr4ks.apps.googleusercontent.com",
+              "client_id": "201389974099-ss6nd2ouimpihisrl1r77tlpsoa5dagd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201389974099:android:cd5e593616cc836e5c1ca6",
+        "android_client_info": {
+          "package_name": "com.shubo7868.shubham.facedetectioapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201389974099-2c4jdlljk2bm8ade5ti9t8abgq2e79fc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shubo7868.shubham.facedetectioapp",
+            "certificate_hash": "53ccda5ada93ef78db5edae30af08947cd007ee3"
+          }
+        },
+        {
+          "client_id": "201389974099-ss6nd2ouimpihisrl1r77tlpsoa5dagd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoqYYbOlT5fnFdHm78R4p-gr-APrDltKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201389974099-ss6nd2ouimpihisrl1r77tlpsoa5dagd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

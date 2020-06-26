@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
+// Depricated class not in use
 public class Gallery extends MainActivity {
 
     */

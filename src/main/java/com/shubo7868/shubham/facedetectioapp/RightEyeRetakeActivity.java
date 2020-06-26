@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+//This activity previews the right eye image taken + Shows RadioButton Dialog to Choose Eye Anaemic level
 public class RightEyeRetakeActivity extends AccountActivity{
 
 
@@ -61,15 +64,34 @@ public class RightEyeRetakeActivity extends AccountActivity{
     private Firebase mRootRef;
     private StorageReference mStorage;
     private static String FILENAMEright;
+    public static SimpleDateFormat dateFormat;
+    public static String formtDate;
+
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public void date() {
+        Calendar calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        formtDate = dateFormat.format(calendar.getTime());
+
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_righteye_retake);
+       FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         //Firebase reference
-        mRootRef = new Firebase("https://face-detection-ml-app.firebaseio.com/Students");
-        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://face-detection-ml-app.appspot.com");
+//        mRootRef = new Firebase("https://face-detection-ml-app.firebaseio.com/Students");
+//        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://face-detection-ml-app.appspot.com");
+
+//        mRootRef = new Firebase("https://hk-schoolkids-project.firebaseio.com/hk-schoolkids-project");
+        mRootRef = new Firebase("https://hk-schoolkids-project.firebaseio.com/StudentRecords/BasicHealthInfo");
+//        mRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://hk-schoolkids-project.firebaseio.com").child("StudentRecords").child("BasicHealthInfo");
+        mStorage = FirebaseStorage.getInstance().getReferenceFromUrl("gs://hk-schoolkids-project.appspot.com");
+
+      //  mRootRef.keepSynced(true);
 
         retakeRightEye = findViewById(R.id.button_retake_right);
         okRightEye = findViewById(R.id.button_OK_right);
@@ -84,7 +106,7 @@ public class RightEyeRetakeActivity extends AccountActivity{
         });
 
 
-
+        // Carried right eye bitmap to be saved and viewed
         rightEyeCropImg = MainActivityRight.getTransferRightEyeCrop();
         loadImageFromStorage(saveToInternalStorage(rightEyeCropImg));
 
@@ -149,16 +171,25 @@ public class RightEyeRetakeActivity extends AccountActivity{
                         startActivity(myIntentRC);
 
                         //Sending data to firebase
+                        date();
+                        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + formtDate + "status:  " + statusEye);
+                       Firebase childRef = mRootRef.child(UHID).child(formtDate).child("Anaemia");  // Commenting for the time being as this data is to be pushed in nested format
 
-                       Firebase childRef = mRootRef.child(UHID);
-                        childRef.setValue(fileName2);
+                        if(statusEye.equals("Anaemic")) {
+                            childRef.setValue("Yes");
 
+                        }else if(statusEye.equals("Non-Anaemic")) {
+                            childRef.setValue("No");
+                        }else if(statusEye.equals("Borderline")) {
+                            childRef.setValue(statusEye);
+
+                        }
                         Uri rightEyeUri = getImageUri(RightEyeRetakeActivity.this, rightEyeCropImg);
-                        StorageReference filepath = mStorage.child("FACES").child(FILENAMEright);
+                        StorageReference filepath = mStorage.child("ConjunctivaImages").child(FILENAMEright);
                         filepath.putFile(rightEyeUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(RightEyeRetakeActivity.this, "Uploaded", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RightEyeRetakeActivity.this, "Uploaded RightEye", Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -178,10 +209,7 @@ public class RightEyeRetakeActivity extends AccountActivity{
 
 
 
-                // dialog for Conjuctiva Status
-                // Move to uhid/Scan mode
-                // correect other activity links of MainActivityRight to this one
-                // ??
+
 
 
 
@@ -196,6 +224,7 @@ public class RightEyeRetakeActivity extends AccountActivity{
 
     }
 
+    // Added voice support
     public void play2(){
         if(player == null) {
             player = MediaPlayer.create(this, R.raw.eystatusvoice);
@@ -287,7 +316,7 @@ public class RightEyeRetakeActivity extends AccountActivity{
 
 
     }
-
+    // saves image to internal memory of device inside "FACES" directory
     @TargetApi(Build.VERSION_CODES.N)
     private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileEndName) {
 
@@ -295,37 +324,7 @@ public class RightEyeRetakeActivity extends AccountActivity{
         String UHID_QRCODE  = Scanner.getUhID();
 
         String UHID_MANUAL = UhidEntryActivity.get_uhidNumber();
-        //  Bundle extras1 = getIntent().getExtras();
-      /*  if(extras != null) {
-             UHID_MANUAL =extras.getString("@UHID");
-             UHID = UHID_MANUAL;
-        }else {
-           System.out.println("No Manual Entry from user");
-//            UHID_MANUAL =extras.getString("@UHID");
-//            UHID= UHID_MANUAL;
-            UHID_QRCODE = extras.getString("#UHIDQR");
-            UHID = UHID_QRCODE;
-        }*/
 
-
-        //  UHID_MANUAL = getIntent().getStringExtra("@UHID");
-
-
-//        if(extras != null) {
-//            if(extras.getString("#UHIDQRr") != null) {
-//                UHID_QRCODE = extras.getString("#UHIDQRr");
-//                UHID = UHID_QRCODE;
-//                System.out.println(UHID+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@================================@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//            }
-//
-//
-//            if(extras.getString("@UHIDr") != null) {
-//                UHID_MANUAL =extras.getString("@UHIDr");
-//                UHID = UHID_MANUAL;
-//                System.out.println("No QRCODE Scanned By user");
-//            }
-//
-//        }
 
 
         if(!UHID_MANUAL.isEmpty()) {
@@ -337,6 +336,7 @@ public class RightEyeRetakeActivity extends AccountActivity{
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd :: HH:mm:ss");
+
         String formattedDate = df.format(c.getTime());     // c is Calendar object
         System.out.println("========> formatted date => "+formattedDate);
 
@@ -375,42 +375,12 @@ public class RightEyeRetakeActivity extends AccountActivity{
         }
     }
 
-    //trying to save text file
 
-//    public void writeToFile(String data)
-//    {
-//        String path =
-//                Environment.getExternalStorageDirectory() + File.separator  + "FACES";
-//        // Create the folder.
-//        File folder = new File(path);
-//        folder.mkdirs();
-//
-//        // Create the file.
-//        File file = new File(folder, "config.txt");
-//
-//        // Save your stream, don't forget to flush() it before closing it.
-//
-//        try
-//        {
-//            file.createNewFile();
-//            FileOutputStream fOut = new FileOutputStream(file);
-//            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-//            myOutWriter.append(data);
-//
-//            myOutWriter.close();
-//
-//            fOut.flush();
-//            fOut.close();
-//        }
-//        catch (IOException e)
-//        {
-//            Log.e("Exception", "File write failed: " + e.toString());
-//        }
-//    }
 
 
     String dataToWrite1 = customFileNameText + statusEye + ".txt";
     String  fileName1= UHID + "IS" + statusEye;
+
 
     public boolean writeToFile(String dataToWrite, String fileName) {
 

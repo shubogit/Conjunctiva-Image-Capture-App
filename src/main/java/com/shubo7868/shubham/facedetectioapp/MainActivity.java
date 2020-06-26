@@ -29,6 +29,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
@@ -78,7 +79,7 @@ import dmax.dialog.SpotsDialog;
 //import android.os.Bundle;
 
 
-
+//Left eye Detection class, "MainActivity"
 public class MainActivity extends AppCompatActivity {
 
     private Button faceDetectButton;
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
      //   setContentView(R.layout.user_login);
         setContentView(R.layout.activity_main);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         starterIntent = getIntent();
 
@@ -146,34 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage("Please Wait, Processing...")
                 .setCancelable(false)
                 .build();
-
-
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        builder.setTitle("Conjuctiva Status:");
-//        final String[] colors = MainActivity.this.getResources().getStringArray(R.array.conjuctiva);
-//
-//        builder.setSingleChoiceItems(R.array.conjuctiva, -1, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                selection = colors[which];
-//            }
-//        });
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                statusEye = selection;
-//                System.out.println(statusEye+"FFFFFFFFFFFFFFFFFFF");
-//                Toast.makeText(MainActivity.this, "Selected Option :"+selection, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//        builder.create();
-
 
 
         Logout.setOnClickListener(new View.OnClickListener() {
@@ -245,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+// Below adds voice support to this activity
     public void play1(){
         if(player == null) {
             player = MediaPlayer.create(this, R.raw.lowersectionlrfteye);
@@ -289,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
         stopPlayer();
     }
 
+    // process bitmap for face detection
     private void processFacedetection(Bitmap bitmap) {
 
        /* try {
@@ -328,51 +303,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public String saveToInternalStorage(Bitmap bitmapImage) {
-//
-//        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-//        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-//        // Create imageDir
-//        File mypath = new File(directory,"profile.jpg");
-//
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(mypath);
-//            // Use the compress method on the BitMap object to write image to the OutputStream
-//            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                fos.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//      //  Toast.makeText(this, directory.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-//        return directory.getAbsolutePath();
-//
-//    }
-
-//    private void loadImageFromStorage(String path)
-//    {
-//
-//        try {
-//            File f=new File(path, "profile.jpg");
-//            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-//           img=(ImageView)findViewById(R.id.lefteye_retake);
-//           img.setImageBitmap(b);
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        Indicator = 2;
-//
-//    }
 
 
+//  Gets contours of each face , so that bitmaps of eye and other face section can be obtained
     private void getFaceResults(List<FirebaseVisionFace> firebaseVisionFaces) {
         int counter = 0;
 
@@ -491,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 modRightX = maxX+100;
-                modRightY = minRY-80;  //???? 40 ---> 60-->
+                modRightY = minRY-80;
                 System.out.println("modRightY "+modRightY);
                 System.out.println("modRightX "+modRightX);
 
@@ -525,12 +458,7 @@ public class MainActivity extends AppCompatActivity {
 //
                 transferLeftEyeCrop = leftEyeCrop;
 
-//                if (showImageR(rightEyeCrop)) {
-////                   finish();
-////                   startActivity(starterIntent);
-//
-//                   recreate();
-//               }
+
 
 
 
@@ -588,50 +516,12 @@ public class MainActivity extends AppCompatActivity {
 
 
             Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),Bitmap.Config.RGB_565);
-            //    Bitmap tempBitmap1 = Bitmap.createBitmap(bitmap, img.getLeft(),img.getTop()+10, bitmap.getWidth()-100, bitmap.getHeight()-100);
-        //   Bitmap tempBitmap2 = Bitmap.createBitmap(bitmap,x1, y1, width1,height1 );
-//            Canvas tempCanvas = new Canvas(tempBitmap2);
-//            tempCanvas.drawBitmap(bitmap, x2, y2,null);
-
-
-
-//            Paint myRectPain = new Paint();
-//            myRectPain.setStrokeWidth(10);
-//            myRectPain.setColor(Color.RED);
-//            myRectPain.setStyle(Paint.Style.STROKE);
-
-//            Rect bound = face.getBoundingBox();
-//            tempCanvas.drawRect(bound, myRectPain);
-           /* for(FirebaseVisionFace face1: firebaseVisionFaces) {
-
-            }*/
-
-
-            /*ImageView imgV = findViewById(R.id.imgView);
-            imgV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap2));*/
 
 
         }
 
 
-//        loadImageFromStorage(saveToInternalStorage(leftEyeCrop));     //Indicator --> 2
         System.out.println("AFTER GETTING BITMAP");
-
-
-
-        /*SavesToInternal(imgV);
-        SavesToInternal(img);*/
-
-
-
-
-      //  createDirectoryAndSaveFile(rightEyeCrop, ": RightEyeConjuctiva");   //Depricated from here as called individually another activity
-
-//        createDirectoryAndSaveFaceFile(tempFaceCrop, statusEye);
-
-
-
-       // loadImageFromStorage(saveToInternalStorage(tempEyeCrop));
 
 
         alertDialog.dismiss();
@@ -725,63 +615,4 @@ public class MainActivity extends AppCompatActivity {
         cameraView.start();
     }
 
-
-
-
-
-
-
-//    private boolean showImageR(Bitmap bitmap) {
-//        if(bitmap != null) {
-//            imgV = findViewById(R.id.imgView);
-//            imgV.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
-//            Indicator = 1;
-//            return true;
-//        }else
-//        return false;
-//    }
-//    private boolean showImageL(Bitmap bitmap) {
-//        Indicator = 2;
-//        imgV = findViewById(R.id.imgView);
-//        imgV.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
-//        return true;
-//    }
-
-
 }
-/*  public void SavesToInternal(ImageView imageView) {
-
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-
-        File sdCardDirectory = Environment.getExternalStorageDirectory();
-        //creating specific file for image storage
-        String DATE = String.valueOf(System.currentTimeMillis());
-        String FILENAME = DATE + ".png";
-
-        File image = new File(sdCardDirectory, FILENAME);
-
-        boolean success = false;
-        FileOutputStream outputStream;
-        try {
-            System.out.println("<<???????????????????????????????????????<<<<<<<<<<<<<<<");
-            outputStream = new FileOutputStream(image);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-
-            outputStream.flush();
-            outputStream.close();
-            success = true;
-        }catch (FileNotFoundException e) {
-            System.out.println(e);
-        }catch (IOException e) {
-            System.out.println(e);
-        }
-
-        if(success) {
-            Toast.makeText(getApplicationContext(), "Face & Eye image saved", Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(getApplicationContext(),
-                    "Error during image saving", Toast.LENGTH_LONG).show();
-        }
-    }*/

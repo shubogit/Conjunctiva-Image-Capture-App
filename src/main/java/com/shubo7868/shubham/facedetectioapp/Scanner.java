@@ -39,7 +39,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
-
+//This is QR CODE Scanner Class
 public class Scanner extends AppCompatActivity {
 
    CameraView cameraView;
@@ -152,7 +152,7 @@ detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options);
                    });
        }
     }
-
+// Detects different types of QR based on user case
     private void processResult(List<FirebaseVisionBarcode> firebaseVisionBarcodes) {
 
         if( firebaseVisionBarcodes.size() > 0) {

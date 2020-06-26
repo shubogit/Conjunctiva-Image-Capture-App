@@ -43,7 +43,7 @@ import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 
-// This is QRCODE DETECTOR ACTIVITY
+// This is QR CODE DETECTOR ACTIVITY (This Activity id depricated, and not in use). It processes image for barcode detection
 public class AccountActivity extends AppCompatActivity {
 
 

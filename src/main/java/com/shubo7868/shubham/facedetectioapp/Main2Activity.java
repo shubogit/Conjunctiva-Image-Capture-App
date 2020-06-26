@@ -108,18 +108,7 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-//                if(task.isSuccessful()) {
-//                    if(selection1.equals("ENTRY-MODE")) {
-//                        System.out.println("*********************************************************************************************************************");
-//                        Intent intent = new Intent(Main2Activity.this, UhidEntryActivity.class);
-//                        startActivity(intent);
-//
-//                    }else if(selection1.equals("QR-MODE")) {
-//                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-//                        Intent intent = new Intent(Main2Activity.this, AccountActivity.class);
-//                        startActivity(intent);
-//                    }
-//                }
+
                  if(!task.isSuccessful()) {
                     Toast.makeText(Main2Activity.this, "Sign In Problem", Toast.LENGTH_LONG).show();
 

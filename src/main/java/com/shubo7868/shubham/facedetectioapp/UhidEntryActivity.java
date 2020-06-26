@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+//Manual Uhid Entry Mode Class
 public class UhidEntryActivity extends AppCompatActivity {
 
     private Button uhidButton;
@@ -115,7 +115,7 @@ public class UhidEntryActivity extends AppCompatActivity {
     }
 
     public static String getStatusModeFromUhid() {
-        // return  selection1;    // changed just now .. will use it to carry selected mode in order to set it as per directed until change again
+        // return  selection1;
         return selectionFromUhid;
     }
 }

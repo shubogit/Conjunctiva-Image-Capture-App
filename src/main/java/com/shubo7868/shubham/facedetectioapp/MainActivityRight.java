@@ -30,6 +30,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
@@ -59,6 +60,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
+
+//Right Eye Conjunctiva Capture Activity
 
 public class MainActivityRight extends AppCompatActivity {
     private Button faceDetectButton;
@@ -101,6 +104,7 @@ public class MainActivityRight extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         //   setContentView(R.layout.user_login);
         setContentView(R.layout.activity_righteye);
 
@@ -126,31 +130,7 @@ public class MainActivityRight extends AppCompatActivity {
                 .build();
 
 
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivityRight.this);
-//        builder.setTitle("Conjuctiva Status:");
-//        final String[] colors = MainActivityRight.this.getResources().getStringArray(R.array.conjuctiva);
-//
-//        builder.setSingleChoiceItems(R.array.conjuctiva, -1, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                selection = colors[which];
-//            }
-//        });
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                statusEye = selection;
-//                System.out.println(statusEye+"FFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAANNNNNNNNNGGGGGGGGGGGGGGGGGGGGGGGGG");
-//                Toast.makeText(MainActivityRight.this, "Selected Option :"+selection, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//             //   recreate();
-//            }
-//        });
-//        builder.create();
+
 
 
 
@@ -223,7 +203,7 @@ public class MainActivityRight extends AppCompatActivity {
 
 
 
-
+// Voice support added
     public void play1(){
         if(player == null) {
             player = MediaPlayer.create(this, R.raw.lowersectionrighteye);
@@ -267,6 +247,7 @@ public class MainActivityRight extends AppCompatActivity {
         stopPlayer();
     }
 
+    // Process bitmap for faces
     private void processFacedetection(Bitmap bitmap) {
 
        /* try {
@@ -332,23 +313,7 @@ public class MainActivityRight extends AppCompatActivity {
 
     }
 
-//    private void loadImageFromStorage(String path)
-//    {
-//
-//        try {
-//            File f=new File(path, "profile.jpg");
-//            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-//            rightEyePreview=(ImageView)findViewById(R.id.righteye_retake);
-//            rightEyePreview.setImageBitmap(b);
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        Indicator = 2;
-//
-//    }
+
 
 
     private void getFaceResults(List<FirebaseVisionFace> firebaseVisionFaces) {
@@ -498,19 +463,8 @@ public class MainActivityRight extends AppCompatActivity {
                 leftEyeCrop = Bitmap.createBitmap(bitmap, avgX, avgYY, widthLeftEye, heightEyee);
 
                 tempEyeCrop = Bitmap.createBitmap(bitmap, modLeftXX, avgYY, widthEyee,heightEyee);
-//                rightEyeimgV = findViewById(R.id.righteyeimgView);
-//                rightEyeimgV.setImageDrawable(new BitmapDrawable(getResources(), rightEyeCrop));
-//                   showImageR(bitmap);
+
                 transferRightEyeCrop = rightEyeCrop;
-
-//                if (showImageR(rightEyeCrop)) {
-////                   finish();
-////                   startActivity(starterIntent);
-//
-//                   recreate();
-//               }
-
-
 
 
             }
@@ -520,32 +474,6 @@ public class MainActivityRight extends AppCompatActivity {
             RectOverlay rectOverlay = new RectOverlay(graphicOverlay, rect);
             ContourOverlay contourOverlay = new ContourOverlay(graphicOverlay, FaceDataMap);
             graphicOverlay.add(contourOverlay);
-
-
-//            Boolean defaultFromQRAccount = Scanner.getDefaultMode();
-//            if(defaultFromQRAccount == false) {
-//                myIntent = new Intent(this, Scanner.class);
-//            }
-//            else if(defaultFromQRAccount){
-//                String ActionOnMode = Scanner.getStatusMode();
-//                if(ActionOnMode.equals("Use QR Code Scanning")) {
-//                    myIntent = new Intent(this, Scanner.class);
-//                }
-//                if(ActionOnMode.equals("Use Manual UHID Entry")) {
-//                    myIntent = new Intent(this, UhidEntryActivity.class);
-//                }
-//            }
-//            Boolean modeChangeFromUhidActivity = UhidEntryActivity.get_ModeChangedFromUhidActivity();
-//            if(modeChangeFromUhidActivity) {
-//                String ActionOnModefromUhid = UhidEntryActivity.getStatusModeFromUhid();
-//                if(ActionOnModefromUhid.equals("Use QR Code Scanning")) {
-//                    myIntent = new Intent(this,Scanner.class);
-//                }
-//                if(ActionOnModefromUhid.equals("Use Manual UHID Entry")) {
-//                    myIntent = new Intent(this, UhidEntryActivity.class);
-//                }
-//
-//            }
 
 
             myIntent = new Intent(MainActivityRight.this, RightEyeRetakeActivity.class);
@@ -575,42 +503,15 @@ public class MainActivityRight extends AppCompatActivity {
             int width = face.getBoundingBox().width();
             int height =  face.getBoundingBox().height();
 
-           /* System.out.println("centerX -> "+ face.getBoundingBox().centerX());
-            System.out.println("centerY -> "+ face.getBoundingBox().centerY());
-            System.out.println("excenter-X -> "+ face.getBoundingBox().exactCenterX());
-            System.out.println("excenter-Y -> "+ face.getBoundingBox().exactCenterY());
-            System.out.println("right or x3 -> "+ face.getBoundingBox().right);
-            System.out.println("left or x2 -> "+ face.getBoundingBox().left);
-            System.out.println("top or y2 -> "+ face.getBoundingBox().top);
-            System.out.println("bottom or y3 -> "+ face.getBoundingBox().bottom);
-            System.out.println("width1 -> "+width1 );
-            System.out.println("height1  "+ height1);
-            System.out.println("width -> "+ width);
-            System.out.println("height -> "+ height);*/
+
 
 
             Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),Bitmap.Config.RGB_565);
-            //    Bitmap tempBitmap1 = Bitmap.createBitmap(bitmap, img.getLeft(),img.getTop()+10, bitmap.getWidth()-100, bitmap.getHeight()-100);
-            //   Bitmap tempBitmap2 = Bitmap.createBitmap(bitmap,x1, y1, width1,height1 );
-//            Canvas tempCanvas = new Canvas(tempBitmap2);
-//            tempCanvas.drawBitmap(bitmap, x2, y2,null);
 
 
 
-//            Paint myRectPain = new Paint();
-//            myRectPain.setStrokeWidth(10);
-//            myRectPain.setColor(Color.RED);
-//            myRectPain.setStyle(Paint.Style.STROKE);
-
-//            Rect bound = face.getBoundingBox();
-//            tempCanvas.drawRect(bound, myRectPain);
-           /* for(FirebaseVisionFace face1: firebaseVisionFaces) {
-
-            }*/
 
 
-            /*ImageView imgV = findViewById(R.id.imgView);
-            imgV.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap2));*/
 
 
         }
@@ -621,19 +522,6 @@ public class MainActivityRight extends AppCompatActivity {
 
 
 
-        /*SavesToInternal(imgV);
-        SavesToInternal(img);*/
-
-
-
-
-
-      //  createDirectoryAndSaveFile(leftEyeCrop, ": LeftEyeConjuctiva");
-      //  createDirectoryAndSaveFile(tempFaceCrop, statusEye);
-
-
-
-        // loadImageFromStorage(saveToInternalStorage(tempEyeCrop));
 
 
         alertDialog.dismiss();
@@ -662,28 +550,5 @@ public class MainActivityRight extends AppCompatActivity {
     public static Bitmap getTransferRightEyeCrop() {
         return transferRightEyeCrop;
     }
-
-
-
-
-//    private boolean showImageR(Bitmap bitmap) {
-//        if(bitmap != null) {
-//            imgV = findViewById(R.id.imgView);
-//            imgV.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
-//            Indicator = 1;
-//            return true;
-//        }else
-//            return false;
-//    }
-//    private boolean showImageL(Bitmap bitmap) {
-//        Indicator = 2;
-//        imgV = findViewById(R.id.imgView);
-//        imgV.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
-//        return true;
-//    }
-
-
-
-
 
 }
