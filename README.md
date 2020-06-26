@@ -34,7 +34,7 @@ The application structure from User End.
 
 ## **Approach**
 
-This is an Android Application coded in java. It uses Firebase Mlkit for QR code scanning and detecting face. It uses FireStore as a backend(database).
+This is an Android Application coded in java. It uses Firebase Mlkit for QR code scanning and detecting faces. It uses FireStore as a backend(database).
 
 ***Thank You***
 
