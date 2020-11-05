@@ -1,4 +1,4 @@
-# Conjuctiva-ImageCapture-App
+# Conjunctiva-ImageCapture-App
 
 1. [Introduction](#introduction)
 2. [Requirements](#requirements)
